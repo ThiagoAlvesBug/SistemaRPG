@@ -1,9 +1,16 @@
 package model;
+import java.util.Scanner;
 
 public class Inimigo extends Personagem{
     public Inimigo(String nome){
-        super(nome, 200, 25);
+        super(nome,200,100,0,40,false);
     }
+
+    @Override
+    public void abrirMenuHabilidades(Scanner scanner, Inimigo inimigo) {
+
+    }
+
     @Override
     public void mostrarStatus(){
         System.out.println();

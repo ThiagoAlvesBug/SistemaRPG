@@ -1,18 +1,36 @@
 import model.*;
 import static service.Configuracoes.*;
 
+/*
+Ao atacar:
+HP: 100
+HP: 100 -15
+HP: 85
+
+Menu de Personagens:
+> Guerreiro Nero   HP: 120   (Habilidade ativa por +1 turnos: )
+  Maga Jade        HP: 100
+
+###################################################
+#####  [1] ...   [1] ...   [1] ...   [1] ...  #####
+###################################################
+
+TODO: Tentar implementar em forms com C# ou JavaFX
+*/
+
 void main() {
     Scanner scanner = new Scanner(System.in);
     Guerreiro guerreiro = new Guerreiro("Nero");
     Maga maga = new Maga("Jade");
     Personagem jogadorAtivo = guerreiro; // começando com o guerreiro
 
-    Inimigo inimigo = new Inimigo("Imlerith");
+    Inimigo inimigo = new Inimigo("Caranthir");
     boolean inBattle = true;
 
-    System.out.println("_____BATALHA_INICIADA_____");
-    // ✅ TODO: mover prints de linha vazia para dentro dos métodos,
-    //     podendo utilizar '\n' como alternativa
+    System.out.println("=====================");
+    System.out.println("=      Batalha      =");
+    System.out.println("=====================");
+    System.out.println();
 
     while(inBattle){
 
@@ -20,11 +38,11 @@ void main() {
         jogadorAtivo.mostrarStatus();
         inimigo.mostrarStatus();
 
-        System.out.println("O que deseja fazer?");
         System.out.println("[1] Atacar");
-        System.out.println("[2] Defender");
-        System.out.println("[3] Alterar Personagem");
-        System.out.println("[4] Fugir");
+        System.out.println("[2] Habilidades");
+        System.out.println("[3] Defender");
+        System.out.println("[4] Alterar Personagem");
+        System.out.println("[5] Fugir");
 
         // ✅ TODO: Tratar opções inválidas não numéricasint opcao;
         int opcao;
@@ -45,10 +63,13 @@ void main() {
                 break;
 
             case 2:
-                jogadorAtivo.defender();
+                jogadorAtivo.abrirMenuHabilidades(scanner, inimigo);
                 break;
 
             case 3:
+                jogadorAtivo.defender();
+                break;
+            case 4:
                 if(jogadorAtivo == guerreiro){
                     if(maga.vida > 0){ // Guerreiro só troca para Maga se ela estiver viva.
                         jogadorAtivo = maga;
@@ -66,7 +87,7 @@ void main() {
                 }
                 continue;
 
-            case 4:
+            case 5:
                 System.out.println(jogadorAtivo.nome + " fugiu em segurança.");
                 inBattle = false;
                 continue;
@@ -75,20 +96,30 @@ void main() {
                 System.out.println("Opção inválida.");
                 continue;
         }
-
-        // Turno do inimigo
-        if(inimigo.vida > 0){
-            System.out.println("--------------------");
-            inimigo.atacar(jogadorAtivo);
-        }
         // Verificando morte de inimigo
-        if (inimigo.vida <= 0) {
-            System.out.println("🌟 " + inimigo.nome + " derrotado!2 🌟");
+        if (inimigo.morto()) {
+            System.out.println("🌟 !" + inimigo.nome + " derrotado! 🌟");
             System.out.println();
             System.out.println("Batalha encerrada.");
             inBattle = false;
-        } // Se vida <= 0, personagem morreu.
-        else if(jogadorAtivo.vida <= 0){
+        }
+
+        if(jogadorAtivo instanceof Guerreiro){
+            ((Guerreiro) jogadorAtivo).atualizarEfeitos();
+        }
+
+        if(jogadorAtivo instanceof Maga){
+            ((Maga) jogadorAtivo).atualizarEfeitos(inimigo);
+        }
+
+        // Turno do inimigo
+        System.out.println("--------------------");
+        if(inBattle && inimigo.vida > 0) {
+            inimigo.atacar(jogadorAtivo);
+        }
+
+        // Se vida <= 0, personagem morreu.
+         if(jogadorAtivo.vida <= 0){
             System.out.println("❌ " + jogadorAtivo.nome + " morreu!");
             System.out.println();
             // Guerreiro troca para Maga
