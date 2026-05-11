@@ -1,8 +1,6 @@
 package model;
 import java.util.Scanner;
 
-//    TODO: converter classe para 'abstract', impedindo que seja
-//     diretamente instanciada, podendo instanciar apenas via classes filhas 'concretas'
 public abstract class Personagem {
     public String nome;
     public float vida;
@@ -39,6 +37,7 @@ public abstract class Personagem {
             System.out.println("🛡️ " + nome + " se protegeu!");
         }
 
+
         float danoFinal = dano - defesa;
         if (danoFinal < 0) {
             danoFinal = 0;
@@ -61,6 +60,7 @@ public abstract class Personagem {
     public void mostrarStatus(){
         System.out.println();
         System.out.println("Nome: " + nome);
-        System.out.println("HP: " + vida);
+        System.out.println(">HP: " + vida);
+        System.out.println(">Mana: " + mana);
     }
 }

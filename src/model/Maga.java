@@ -1,107 +1,134 @@
 package model;
 
+import menus.MenuMaga;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Maga extends Personagem{
-
+    // Queimadura
     private boolean queimadura = false;
     private int turnosQueimadura = 0;
-
+    // Escudo de Energia
+    private boolean barreiraAtiva = false;
+    private int turnosBarreira = 0;
+    // Construtor de Maga
     public Maga(String nome){
-        super(nome,100,200,10,20,false);
+        super(nome,125,250,10,20,false);
     }
 
+    // Menu da Classe Maga
     @Override
     public void abrirMenuHabilidades(Scanner scanner, Inimigo inimigo){
-            mostrarStatus();
-            inimigo.mostrarStatus();
-            System.out.println("====================");
-            System.out.println("=   Habilidades    =");
-            System.out.println("====================");
-            System.out.println("[1] Bola de fogo 🔥");
-            System.out.println("[2] Rajada arcana 🪄");
-            System.out.println("[3] Escudo de energia 🔵");
-            System.out.println("[4] Voltar");
-
-            int opcao;
-            if(scanner.hasNextInt()){
-                opcao = scanner.nextInt();
-            } else{
-                System.out.println("Digite apenas números!");
-
-                scanner.next(); // limpa entrada inválida
-                return;
-            }
-        switch (opcao) {
-
-            case 1 -> bolaDeFogo(inimigo);
-
-            case 2 -> rajadaArcana(inimigo);
-
-            case 3 -> escudoDeEnergia();
-
-            case 4 -> {
-                return;
-            }
-            default -> System.out.println("Opção inválida.");
-        }
+        MenuMaga.abrir(this, scanner, inimigo);
     }
 
-    //  TODO: Bola de fogo, com uma pequena chance(%) de deixar o inimigo queimando,
-    //   perdendo uma pequena quantidade de vida a cada turno (por 3 turnos).
+    /*__________Habilidades__________*/
+
+    //   Bola de fogo: lança uma bola de fogo que causa status de queimadura,
+    //   perdendo uma pequena quantidade de vida a cada turno (por 4 turnos).
     public void bolaDeFogo(Personagem inimigo){
         float dano = 30;
+        // Custo de mana da Bola de Fogo.
+        int custoMana = 25;
+        if(mana < custoMana){
+            System.out.println(nome + " não possui mana suficiente!");
+            return;
+        }
+        mana -= custoMana;
+
         inimigo.receberDano(dano);
         queimadura = true;
         turnosQueimadura += 4;
         System.out.println("🟠 " + nome + " atacou " + inimigo.nome + " com bola de fogo. 🟠");
         System.out.println(inimigo.nome + " está em chamas! 🔥");
     }
-
-    // TODO: Rajada Arcana: dispara 5 misseis, cada um causando 10 de dano.
+    //  Rajada Arcana: dispara 5 misseis, cada um causando 10 de dano.
     //  Cada disparo tem uma chance de acertar o inimigo (dano causado pode variar de 0 a 50).
-    //  sout precisa informar quantos disparos acertaram o inimigo.
     public void rajadaArcana(Personagem inimigo){
         int qtdeDisparos = 5;
         float percentualChangeAcertar = 0.5f; // de 0 até 0.99999
         int danoPorDisparo = 10;
-
+        // Custo de mana de Rajada Arcana
+        int custoMana = 40;
+        if(mana < custoMana){
+            System.out.println(nome + " não possui mana suficiente!");
+        }
+        mana -= custoMana;
+        // Definindo, de maneira aleatória, quantos disparos atingiram o alvo.
         int qtdeDisparosAcertados = 0;
-        var rand = new Random();
-
+        var random = new Random();
         for (int indiceDisparo = 0;  indiceDisparo < qtdeDisparos; indiceDisparo++){
             // TODO: pesquisar range de retorno de valores do nextFloat (se vai até 1 ou até outro numero)
-            if(rand.nextFloat() <= percentualChangeAcertar){
+            if(random.nextFloat() <= percentualChangeAcertar){
                 qtdeDisparosAcertados++;
             }
         }
-
         int dano = qtdeDisparosAcertados * danoPorDisparo;
+
         inimigo.receberDano(dano);
         System.out.println(nome + " atacou " + inimigo.nome + " com uma rajada de projéteis arcanos.");
         System.out.println("Acertou " + qtdeDisparosAcertados + "/" + qtdeDisparos + " disparos.");
     }
-
-    // TODO: Escudo de Energia: o dano recebido na rodada será redirecionado para a mana.
+    //  Escudo de Energia: o dano recebido na rodada será redirecionado para a mana.
     //  Jogador perde mana ao invés de vida.
-    public void escudoDeEnergia(){
-        System.out.println("Em breve.");
-    }
+    public void barreiraDeSangue(){
+        int dano = 20;
+        if(vida < dano){
+            System.out.println(nome + " não possui vida suficiente para sacrificar!");
+            return;
+        }
 
-    public void atualizarEfeitos(Personagem inimigo){
+        if(!barreiraAtiva){
+            barreiraAtiva = true;
+            vida -= dano;
+            turnosBarreira = 3;
+            System.out.println(nome + " criou uma barreira de sangue! 🩸");
+        }
+    }
+    // Receber dano: Comportamentos diferentes dependendo das habilidades defensivas ativas.
+    @Override
+    public void receberDano(float dano){
+        if(defendendo && barreiraAtiva){
+            dano = dano/ 2;
+            mana -= dano;
+
+            System.out.println("O dano causado na barreira foi reduzido.");
+            System.out.println(nome + " recebeu " + dano + " de dano.");
+        }
+        else if(barreiraAtiva){
+            mana -= dano;
+
+            if(mana < 0){
+                mana = 0;
+            }
+            System.out.println("🩸 A barreira absorveu " + dano + " de dano.");
+        } else{
+            super.receberDano(dano);
+        }
+    }
+    /*__________Aplicando Efeitos de status__________*/
+    public void aplicandoEfeitos(Personagem inimigo){
+        // Escudo de Energia
+        if(barreiraAtiva){
+            turnosBarreira--;
+            System.out.println("🩸 Barreira ativa por mais " + turnosBarreira + " turno(s).");
+
+            if(turnosBarreira <= 0){
+                barreiraAtiva = false;
+                System.out.println(nome + " perdeu sua barreira.");
+            }
+        }
+        // Queimadura por bola de fogo
         if(queimadura){
             turnosQueimadura--;
             System.out.println(turnosQueimadura + " turnos de queimadura restante. 🔥");
             float danoQueimadura = 5;
-            inimigo.receberDano(danoQueimadura);
 
-            if(turnosQueimadura <= 0){
+            inimigo.receberDano(danoQueimadura);if(turnosQueimadura <= 0){
                 queimadura = false;
                 System.out.println(inimigo.nome + " parou de queimar.");
             }
         }
     }
-
 }
 

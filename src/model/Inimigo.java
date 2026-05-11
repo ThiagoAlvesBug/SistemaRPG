@@ -7,14 +7,12 @@ public class Inimigo extends Personagem{
     }
 
     @Override
-    public void abrirMenuHabilidades(Scanner scanner, Inimigo inimigo) {
-
-    }
+    public void abrirMenuHabilidades(Scanner scanner, Inimigo inimigo) { }
 
     @Override
     public void mostrarStatus(){
         System.out.println();
         System.out.println("Inimigo: " + nome);
-        System.out.println("HP: " + vida + "\n");
+        System.out.println(">HP: " + vida + "\n");
     }
 }
