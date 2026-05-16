@@ -1,6 +1,8 @@
 package model;
 
 import menus.MenuGuerreiro;
+import menus.MenuItens;
+
 import java.util.Scanner;
 
 public class Guerreiro extends Personagem{
@@ -10,12 +12,9 @@ public class Guerreiro extends Personagem{
     // Pele de Aço
     private boolean peleAcoAtivo = false;
     private int turnosPeleAço = 0;
-    // Valores originais de ataque e defesa
-    private float ataqueOriginal;
-    private float defesaOriginal;
     // Construtor de Guerreiro
     public Guerreiro(String nome){
-        super(nome,200,100,25,25,false);
+        super(nome,400,200,3,3,20,50,false);
         ataqueOriginal = ataque;
         defesaOriginal = defesa;
     }
@@ -24,6 +23,8 @@ public class Guerreiro extends Personagem{
     public void abrirMenuHabilidades(Scanner scanner, Inimigo inimigo){
         MenuGuerreiro.abrir(this, scanner, inimigo);
     }
+    @Override
+    public void abrirMenuItens(Scanner scanner) { MenuItens.abrir(this, scanner); }
     /*__________Habilidades__________*/
 
     // Golpe devastador: um ataque que causa 200% do dano de ataque.

@@ -1,5 +1,6 @@
 package model;
 
+import menus.MenuItens;
 import menus.MenuMaga;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,7 +14,9 @@ public class Maga extends Personagem{
     private int turnosBarreira = 0;
     // Construtor de Maga
     public Maga(String nome){
-        super(nome,125,250,10,20,false);
+        super(nome,350,250,3,3,40,20,false);
+        ataqueOriginal = ataque;
+        defesaOriginal = defesa;
     }
 
     // Menu da Classe Maga
@@ -22,6 +25,8 @@ public class Maga extends Personagem{
         MenuMaga.abrir(this, scanner, inimigo);
     }
 
+    @Override
+    public void abrirMenuItens(Scanner scanner) { MenuItens.abrir(this, scanner); }
     /*__________Habilidades__________*/
 
     //   Bola de fogo: lança uma bola de fogo que causa status de queimadura,
@@ -82,7 +87,7 @@ public class Maga extends Personagem{
             barreiraAtiva = true;
             vida -= dano;
             turnosBarreira = 3;
-            System.out.println(nome + " criou uma barreira de sangue! 🩸");
+            System.out.println(nome + " criou uma barreira de sangue! 🩸" + " -" + dano + " de vida.");
         }
     }
     // Receber dano: Comportamentos diferentes dependendo das habilidades defensivas ativas.
@@ -106,6 +111,7 @@ public class Maga extends Personagem{
             super.receberDano(dano);
         }
     }
+
     /*__________Aplicando Efeitos de status__________*/
     public void aplicandoEfeitos(Personagem inimigo){
         // Escudo de Energia
@@ -124,7 +130,8 @@ public class Maga extends Personagem{
             System.out.println(turnosQueimadura + " turnos de queimadura restante. 🔥");
             float danoQueimadura = 5;
 
-            inimigo.receberDano(danoQueimadura);if(turnosQueimadura <= 0){
+            inimigo.receberDano(danoQueimadura);
+            if(turnosQueimadura <= 0){
                 queimadura = false;
                 System.out.println(inimigo.nome + " parou de queimar.");
             }

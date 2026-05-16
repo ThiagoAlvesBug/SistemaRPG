@@ -1,37 +1,34 @@
 package menus;
-import model.Guerreiro;
-import model.Inimigo;
-import habilidades.HabilidadeGuerreiro;
+
+import habilidades.HabilidadesMaga;
+import model.Personagem;
 import java.util.Scanner;
 
-public class MenuGuerreiro {
-    public static void abrir(Guerreiro guerreiro, Scanner scanner, Inimigo inimigo){
-        // guerreiro.mostrarStatus();
-        // inimigo.mostrarStatus();
+public class MenuItens {
+    public static void abrir(Personagem jogadorAtivo, Scanner scanner){
         int larguraTopo = 100;
         int meiaLarguraTopo = larguraTopo/2;
         int larguraCentro = larguraTopo - 6;
         int meiaLarguraCentro = larguraCentro/2;
         // Cima
         System.out.println("#".repeat(larguraTopo));
-        // Golpe Devastador / Berserker
+        // Poção de cura / Poção de mana
         System.out.println(
             "## "
-            + alinharEsquerda("[1] Golpe Devastador ⚔️", meiaLarguraCentro, " ")
-            + alinharDireita("[2] Berserker 💢",meiaLarguraCentro , " ")
+            + alinharEsquerda("[1] POÇÃO DE CURA",meiaLarguraCentro," ")
+            + alinharDireita("[2] POÇÃO DE MANA",meiaLarguraCentro ," ")
             +  " ##");
         // Centro vazio
         System.out.println(
             "## "
-            + alinharEsquerda("", meiaLarguraCentro, " ")
-            + alinharDireita("", meiaLarguraCentro , " ")
+            + alinharEsquerda("",meiaLarguraCentro," ")
+            + alinharDireita("",meiaLarguraCentro," ")
             +  " ##");
-        // Pele de Aço / Fugir
+        // Voltar
         System.out.println(
             "## "
-            + alinharEsquerda("[3] Pele de Aço🦾", meiaLarguraCentro, " ")
-            + alinharDireita("[4] Voltar ↩",meiaLarguraCentro , " ")
-            +  " ##");
+            + alinharCentro("[3] VOLTAR",larguraCentro," ")
+            + " ##");
         // Baixo
         System.out.println("#".repeat(larguraTopo));
 
@@ -44,11 +41,10 @@ public class MenuGuerreiro {
             scanner.next(); // limpa entrada inválida
             return;
         }
-        switch (opcao){
-            case 1 -> HabilidadeGuerreiro.GOLPE_DEVASTADOR.usar(guerreiro, inimigo);
-            case 2 -> HabilidadeGuerreiro.BERSERKER.usar(guerreiro, inimigo);
-            case 3 -> HabilidadeGuerreiro.PELE_DE_ACO.usar(guerreiro, inimigo);
-            case 4 -> { return; }
+        switch (opcao) {
+            case 1 -> jogadorAtivo.curarVida();
+            case 2 -> jogadorAtivo.curarMana();
+            case 3 -> { return;}
             default -> System.out.println("Opção inválida.");
         }
     }
@@ -78,4 +74,9 @@ public class MenuGuerreiro {
         //   Preencher à esquerda_________+_________Conteúdo_________+_________Preencher à direita
         return caracterRepetir.repeat(esquerda) + textoRecortado + caracterRepetir.repeat(direita);
     }
+
+
+
+
+
 }

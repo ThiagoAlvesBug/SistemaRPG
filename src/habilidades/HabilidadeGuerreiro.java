@@ -23,5 +23,3 @@ public enum HabilidadeGuerreiro {
 
     public abstract void usar(Guerreiro usuario, Personagem inimigo);
 }
-
-
