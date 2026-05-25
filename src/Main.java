@@ -1,17 +1,16 @@
 import batalha.SistemaBatalha;
-import cenarios.Cenarios;
-import model.Personagem;
 import model.Guerreiro;
-import model.Maga;
+import model.Mago;
+import service.Colors;
 
 void main() throws Exception{
-    Guerreiro guerreiro = new Guerreiro("Nero");
-    Maga maga = new Maga("Jade");
+    Guerreiro guerreiro = new Guerreiro("Conan");
+    Mago mago = new Mago("Magus");
 
-    SistemaBatalha sistemaBatalha = new SistemaBatalha(guerreiro, maga);
+    //Colors.colorfulPrint("Testando texto colorido", Colors.BLUE);
+
+    SistemaBatalha sistemaBatalha = new SistemaBatalha(guerreiro, mago);
     sistemaBatalha.iniciar();
-
-
 
 /*
 
@@ -43,6 +42,9 @@ void main() throws Exception{
 ##                               [4] ALTERAR PERSONAGEM                                ##
 ## [3] DEFENDER                                                              [5] FUGIR ##
 #########################################################################################
+
+
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
 
 |‾‾‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾‾|
 |          |                                                                  |         |

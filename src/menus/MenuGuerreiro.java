@@ -1,13 +1,18 @@
 package menus;
+import habilidades.Habilidades;
 import model.Guerreiro;
 import model.Inimigo;
-import habilidades.HabilidadeGuerreiro;
+import batalha.SistemaBatalha;
+
+import java.util.List;
 import java.util.Scanner;
 
 public class MenuGuerreiro {
-    public static void abrir(Guerreiro guerreiro, Scanner scanner, Inimigo inimigo){
-        // guerreiro.mostrarStatus();
-        // inimigo.mostrarStatus();
+    public static void abrir(Guerreiro guerreiro, Scanner scanner, Inimigo inimigo, SistemaBatalha batalha){
+
+        // Listando Habilidades da classa Guerreiro
+        List<Habilidades> habilidades = guerreiro.getHabilidades();
+        /*__________Menu_De_Habilidades__________*/
         int larguraTopo = 100;
         int meiaLarguraTopo = larguraTopo/2;
         int larguraCentro = larguraTopo - 6;
@@ -35,22 +40,24 @@ public class MenuGuerreiro {
         // Baixo
         System.out.println("#".repeat(larguraTopo));
 
-        //    TODO: Implementar loop para ser executado até que uma opção válida seja informada.
-        int opcao;
-        if(scanner.hasNextInt()){
-            opcao = scanner.nextInt();
-        } else{
+        if(!scanner.hasNextInt()){
             System.out.println("Digite apenas números!");
-            scanner.next(); // limpa entrada inválida
+            scanner.next();
             return;
         }
-        switch (opcao){
-            case 1 -> HabilidadeGuerreiro.GOLPE_DEVASTADOR.usar(guerreiro, inimigo);
-            case 2 -> HabilidadeGuerreiro.BERSERKER.usar(guerreiro, inimigo);
-            case 3 -> HabilidadeGuerreiro.PELE_DE_ACO.usar(guerreiro, inimigo);
-            case 4 -> { return; }
-            default -> System.out.println("Opção inválida.");
+
+        int opcao = scanner.nextInt();
+        // Voltar
+        if(opcao == habilidades.size() + 1){
+            return;
         }
+        // Validação
+        if (opcao < 1 || opcao > habilidades.size()) {
+            System.out.println("Opção inválida.");
+            return;
+        }
+        // Executando a Habilidade
+        habilidades.get(opcao-1).usar(guerreiro, inimigo, batalha);
     }
 
     // Alinhando à esquerda

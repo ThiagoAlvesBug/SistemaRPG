@@ -1,6 +1,5 @@
 package menus;
 
-import habilidades.HabilidadesMaga;
 import model.Personagem;
 import java.util.Scanner;
 
@@ -10,13 +9,14 @@ public class MenuItens {
         int meiaLarguraTopo = larguraTopo/2;
         int larguraCentro = larguraTopo - 6;
         int meiaLarguraCentro = larguraCentro/2;
+
         // Cima
         System.out.println("#".repeat(larguraTopo));
         // Poção de cura / Poção de mana
         System.out.println(
             "## "
-            + alinharEsquerda("[1] POÇÃO DE CURA",meiaLarguraCentro," ")
-            + alinharDireita("[2] POÇÃO DE MANA",meiaLarguraCentro ," ")
+            + alinharEsquerda("[1] POÇÃO DE CURA (" + jogadorAtivo.pocaoCura +")",meiaLarguraCentro," ")
+            + alinharDireita("[2] POÇÃO DE MANA (" + jogadorAtivo.pocaoMana +")",meiaLarguraCentro ," ")
             +  " ##");
         // Centro vazio
         System.out.println(
@@ -32,7 +32,6 @@ public class MenuItens {
         // Baixo
         System.out.println("#".repeat(larguraTopo));
 
-        //    TODO: Implementar loop para ser executado até que uma opção válida seja informada.
         int opcao;
         if(scanner.hasNextInt()){
             opcao = scanner.nextInt();
@@ -41,6 +40,7 @@ public class MenuItens {
             scanner.next(); // limpa entrada inválida
             return;
         }
+        // TODO: Implementar ENUM para itens.
         switch (opcao) {
             case 1 -> jogadorAtivo.curarVida();
             case 2 -> jogadorAtivo.curarMana();
@@ -48,7 +48,6 @@ public class MenuItens {
             default -> System.out.println("Opção inválida.");
         }
     }
-
     // Alinhando à esquerda
     public static String alinharEsquerda(String texto, int largura, String caracterRepetir){
         var textoPreenchido = texto + " ".repeat(largura);
@@ -74,9 +73,4 @@ public class MenuItens {
         //   Preencher à esquerda_________+_________Conteúdo_________+_________Preencher à direita
         return caracterRepetir.repeat(esquerda) + textoRecortado + caracterRepetir.repeat(direita);
     }
-
-
-
-
-
 }

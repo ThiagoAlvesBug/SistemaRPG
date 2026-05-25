@@ -1,4 +1,4 @@
-package model;
+package menus;
 
 public enum OpcaoMenuPrincipal {
 
@@ -21,7 +21,6 @@ public enum OpcaoMenuPrincipal {
 
     public static OpcaoMenuPrincipal fromInt(int valor){
         for(OpcaoMenuPrincipal op : values()){
-
             if(op.valor == valor){
                 return op;
             }

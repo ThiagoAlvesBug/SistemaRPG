@@ -27,6 +27,7 @@ public class Cenarios {
 
         System.out.print("Deseja entrar na batalha? (1 sim / 2 não): ");
 
+    //    TODO: Implementar loop para ser executado até que uma opção válida seja informada.
         int resposta = scanner.nextInt();
         if(resposta == 1){
 

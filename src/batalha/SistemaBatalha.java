@@ -1,49 +1,51 @@
 package batalha;
-
+import menus.ComportamentoAposMenuPrincipal;
+import menus.OpcaoMenuPrincipal;
 import model.*;
 import service.Configuracoes;
-
 import java.util.*;
 
 public class SistemaBatalha {
+    List<String> logBatalha = new ArrayList<>();
     Random random = new Random();
     Scanner scanner = new Scanner(System.in);
     // Declarando atributos
     Personagem jogadorAtivo;
     Guerreiro guerreiro;
-    Maga maga;
+    Mago mago;
     Inimigo inimigo;
 
-    public SistemaBatalha(Guerreiro guerreiro, Maga maga) {
+    public SistemaBatalha(Guerreiro guerreiro, Mago mago) {
         this.guerreiro = guerreiro;
-        this.maga = maga;
+        this.mago = mago;
         inimigo = new Inimigo("Andariel");
         // Iniciando com personagem aleatório (nextBoolean retorna true ou false, aleatoriamente)
         if (random.nextBoolean()) {
             jogadorAtivo = guerreiro;
         } else {
-            jogadorAtivo = maga;
+            jogadorAtivo = mago;
         }
     }
 
     /*__________Batalha__________*/
 
     // Todas as ações de batalha dividas em métodos.
-    public void iniciar() {
+    public void iniciar() throws InterruptedException {
 
-        System.out.println("Iniciando batalha com: " + jogadorAtivo.nome);
+        System.out.println("Iniciando batalha com: " + jogadorAtivo.getNome());
         // Batalha
         while (verificarBatalhaAtiva()) {
             Configuracoes.limparConsole();
-            mostrarCabecalho();
-            mostrarMenu();
+            // Redesenha a tela a cada turno
+            renderizarTela();
+            // Ler ação do jogador
             int opcao = lerAcao();
-            // Cabeçalho de Batalha
             ComportamentoAposMenuPrincipal comportamento = executarAcao(opcao);
             if (comportamento == ComportamentoAposMenuPrincipal.COMPLETOU_TURNO) {
                 if (verificarFimDeBatalha()) break;
                 aplicarEfeitos();
-                turnoInimigo();
+                turnoInimigo(this);
+                esperar(1000);
             }
             if (comportamento == ComportamentoAposMenuPrincipal.FUGIU) break;
         }
@@ -100,11 +102,11 @@ public class SistemaBatalha {
         // Parte de cima
         System.out.println("|‾" + "‾".repeat(largura) + "‾|");
 
-        var infoNomeJogador = "> " + jogadorAtivo.nome;
-        var infoNomeInimigo = "> " + inimigo.nome;
-        var infoVidaJogador = "> Vida: " + jogadorAtivo.vida;
-        var infoVidaInimigo = "> Vida: " + inimigo.vida;
-        var infoManaJogador = "> Mana: " + jogadorAtivo.mana;
+        var infoNomeJogador = "> " + jogadorAtivo.getNome();
+        var infoNomeInimigo = "> " + inimigo.getNome();
+        var infoVidaJogador = "> Vida: " + jogadorAtivo.getVida();
+        var infoVidaInimigo = "> Vida: " + inimigo.getVida();
+        var infoManaJogador = "> Mana: " + jogadorAtivo.getMana();
         // Linha com nome
         System.out.println(
                 "| "
@@ -123,7 +125,7 @@ public class SistemaBatalha {
                         + alinharEsquerda(infoManaJogador, largura, " ")
                         + " |");
         // 5 linhas em sequência
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             System.out.println("|" + " ".repeat(largura + 2) + "|");
         }
         // Parte de baixo
@@ -149,8 +151,7 @@ public class SistemaBatalha {
         System.out.println(
                 "## "
                         + alinharDoisItensCentro("[3] DEFENDER", "[4] ITENS", larguraCentro, " ")
-                        + " ##"
-        );
+                        + " ##");
         // Alterar Personagem/ Fugir
         System.out.println(
                 "## "
@@ -165,6 +166,7 @@ public class SistemaBatalha {
     private int lerAcao() {
         int opcao;
 
+    //    TODO: Implementar loop para ser executado até que uma opção válida seja informada.
         if (scanner.hasNextInt()) {
             opcao = scanner.nextInt();
         } else {
@@ -180,14 +182,18 @@ public class SistemaBatalha {
 
         OpcaoMenuPrincipal escolha = OpcaoMenuPrincipal.fromInt(opcao);
 
+        if(escolha == null){
+            System.out.println("Opção inválida.");
+            return ComportamentoAposMenuPrincipal.NADA;
+        }
 
         switch (escolha) {
             case ATACAR -> {
-                jogadorAtivo.atacar(inimigo);
+                jogadorAtivo.atacar(inimigo,this);
                 return ComportamentoAposMenuPrincipal.COMPLETOU_TURNO;
             }
             case ABRIR_MENU_HABILIDADES -> {
-                jogadorAtivo.abrirMenuHabilidades(scanner, inimigo);
+                jogadorAtivo.abrirMenuHabilidades(scanner, inimigo, this);
                 return ComportamentoAposMenuPrincipal.COMPLETOU_TURNO;
             }
             case DEFENDER -> {
@@ -203,7 +209,7 @@ public class SistemaBatalha {
                 return ComportamentoAposMenuPrincipal.COMPLETOU_TURNO;
             }
             case FUGIR -> {
-                System.out.println(jogadorAtivo.nome + " fugiu em segurança 💨");
+                logBatalha.add(jogadorAtivo.getNome() + " fugiu em segurança 💨");
                 return ComportamentoAposMenuPrincipal.FUGIU;
             }
             default -> {
@@ -216,38 +222,34 @@ public class SistemaBatalha {
     // Troca de personagens
     private void trocarPersonagem() {
         if (jogadorAtivo == guerreiro) {
-            if (maga.vida > 0) {
-                jogadorAtivo = maga;
-                System.out.println("Personagem alterado para: " + jogadorAtivo.nome);
+            if (mago.getVida() > 0) {
+                jogadorAtivo = mago;
+                System.out.println("Personagem alterado para: " + jogadorAtivo.getNome());
             } else {
-                System.out.println(maga.nome + " está morto.");
+                System.out.println(mago.getNome() + " está morto.");
             }
         } else {
-            if (guerreiro.vida > 0) {
+            if (guerreiro.getVida() > 0) {
                 jogadorAtivo = guerreiro;
-                System.out.println("Personagem alterado para: " + jogadorAtivo.nome);
+                System.out.println("Personagem alterado para: " + jogadorAtivo.getNome());
             } else {
-                System.out.println(guerreiro.nome + " está morto.");
+                System.out.println(guerreiro.getNome() + " está morto.");
             }
         }
     }
 
-    // Efeitos de batalha (efeitos de status)
+    // Efeitos de Status
     private void aplicarEfeitos() {
-        if (jogadorAtivo instanceof Guerreiro) {
-            ((Guerreiro) jogadorAtivo).aplicandoEfeitos();
-        }
-        if (jogadorAtivo instanceof Maga) {
-            ((Maga) jogadorAtivo).aplicandoEfeitos(inimigo);
-        }
-        inimigo.aplicandoEfeitos(jogadorAtivo);
+        jogadorAtivo.aplicarEfeitos(this);
+        inimigo.aplicarEfeitos(this);
     }
 
     // Turno do inimigo
-    private void turnoInimigo() {
+    private void turnoInimigo(SistemaBatalha batalha) {
         System.out.println("|" + "-".repeat(98) + "|");
+        System.out.println();
         if (inimigo.vida > 0) {
-            inimigo.executarTurno(jogadorAtivo);
+            inimigo.executarTurno(jogadorAtivo,batalha);
         }
     }
 
@@ -258,25 +260,25 @@ public class SistemaBatalha {
             return true;
         }
 
-        System.out.println("❌ " + jogadorAtivo.nome + " morreu!");
+        System.out.println("❌ " + jogadorAtivo.getNome() + " morreu!");
         System.out.println();
 
         // Guerreiro troca para Maga
-        if (jogadorAtivo == guerreiro && maga.vida > 0) {
-            jogadorAtivo = maga;
-            System.out.println("⬆️ " + maga.nome + " entrou na batalha.");
+        if (jogadorAtivo == guerreiro && mago.getVida() > 0) {
+            jogadorAtivo = mago;
+            System.out.println("⬆️ " + mago.nome + " entrou na batalha.");
             return true;
         }
 
         // Maga troca para Guerreiro
-        if (jogadorAtivo == maga && guerreiro.vida > 0) {
+        if (jogadorAtivo == mago && guerreiro.getVida() > 0) {
             jogadorAtivo = guerreiro;
-            System.out.println("⬆️ " + guerreiro.nome + " entrou na batalha.");
+            System.out.println("⬆️ " + guerreiro.getNome() + " entrou na batalha.");
             return true;
         }
 
         // Todos os jogadores morreram
-        System.out.println("❌ " + maga.nome + " e " + guerreiro.nome + " foram derrotados.");
+        System.out.println("❌ " + mago.nome + " e " + guerreiro.nome + " foram derrotados.");
         return false;
     }
 
@@ -288,5 +290,32 @@ public class SistemaBatalha {
             return true;
         }
         return false;
+    }
+    // Intervalo entre turnos
+    public void esperar(int ms){
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void renderizarTela(){
+        mostrarCabecalho();
+        mostrarLog();
+        mostrarMenu();
+    }
+
+    public void adicionarLog(String mensagem){
+        logBatalha.add(mensagem);
+    }
+
+    private void mostrarLog(){
+        System.out.println();
+        int maxLinhas = 6;
+        int start = Math.max(0, logBatalha.size() - maxLinhas);
+        for (int i = start; i < logBatalha.size(); i++) {
+            System.out.println(logBatalha.get(i));
+        }
     }
 }

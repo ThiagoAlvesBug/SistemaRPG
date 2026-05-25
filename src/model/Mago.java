@@ -1,32 +1,31 @@
 package model;
-
-import batalha.SistemaBatalha;
-import habilidades.fisica.GolpeDevastador;
-import habilidades.Habilidades;
-import habilidades.buffsEdebuffs.ModoBerserker;
-import habilidades.buffsEdebuffs.PeleDeAco;
-import menus.MenuGuerreiro;
-import menus.MenuItens;
 import java.util.*;
+import batalha.SistemaBatalha;
+import habilidades.magica.BarreiraDeSangue;
+import habilidades.magica.BolaDeFogo;
+import habilidades.Habilidades;
+import habilidades.magica.RajadaArcana;
+import menus.MenuItens;
+import menus.MenuMago;
 
-public class Guerreiro extends Personagem{
+public class Mago extends Personagem{
     // Lista de Habilidades
     private List<Habilidades> habilidades = new ArrayList<>();
 
-    // Construtor de Guerreiro
-    public Guerreiro(String nome){
-        super(nome,400,200,3,3,20,50,false);
+    // Construtor de Mago
+    public Mago(String nome) {
+        super(nome, 350, 250, 3, 3, 40, 20, false);
         ataqueOriginal = ataque;
         defesaOriginal = defesa;
         // Adicionando habilidades à lista de habilidades
-        habilidades.add(new GolpeDevastador());
-        habilidades.add(new ModoBerserker());
-        habilidades.add(new PeleDeAco());
+        habilidades.add(new BolaDeFogo());
+        habilidades.add(new RajadaArcana());
+        habilidades.add(new BarreiraDeSangue());
     }
-    // Menu de habilidade
+    // Menu de habilidades
     @Override
     public void abrirMenuHabilidades(Scanner scanner, Inimigo inimigo, SistemaBatalha batalha){
-        MenuGuerreiro.abrir(this, scanner, inimigo, batalha);
+        MenuMago.abrir(this, scanner, inimigo, batalha);
     }
     // Menu de itens
     @Override

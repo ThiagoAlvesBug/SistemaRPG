@@ -1,4 +1,4 @@
-package model;
+package menus;
 
 public enum ComportamentoAposMenuPrincipal {
 

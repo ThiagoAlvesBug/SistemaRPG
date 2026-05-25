@@ -1,20 +1,23 @@
 package menus;
+import habilidades.Habilidades;
 import model.Inimigo;
-import model.Maga;
-import habilidades.HabilidadesMaga;
-import java.util.Scanner;
+import model.Mago;
+import batalha.SistemaBatalha;
+import java.util.*;
 
-public class MenuMaga {
-    public static void abrir(Maga maga, Scanner scanner, Inimigo inimigo){
-        // maga.mostrarStatus();
-        // inimigo.mostrarStatus();
+public class MenuMago {
+
+    public static void abrir(Mago mago, Scanner scanner, Inimigo inimigo, SistemaBatalha batalha){
+        // Listando Habilidades da classe Mago
+        List<Habilidades> habilidades = mago.getHabilidades();
+        /*__________Menu_De_Habilidades__________*/
         int larguraTopo = 100;
         int meiaLarguraTopo = larguraTopo/2;
         int larguraCentro = larguraTopo - 6;
         int meiaLarguraCentro = larguraCentro/2;
         // Cima
         System.out.println("#".repeat(larguraTopo));
-        // Bola de Fogo / Rajada Arcana
+        // habilidades de cima
         System.out.println(
             "## "
             + alinharEsquerda("[1] Bola de Fogo 🔥", meiaLarguraCentro, " ")
@@ -26,7 +29,7 @@ public class MenuMaga {
             + alinharEsquerda("", meiaLarguraCentro, " ")
             + alinharDireita("", meiaLarguraCentro , " ")
             +  " ##");
-        // Barreira de Sangue / Voltar
+        // habilidade de baixo / voltar
         System.out.println(
             "## "
             + alinharEsquerda("[3] Barreira de Sangue 🩸", meiaLarguraCentro, " ")
@@ -35,21 +38,26 @@ public class MenuMaga {
         // Baixo
         System.out.println("#".repeat(larguraTopo));
 
-        int opcao;
-        if(scanner.hasNextInt()){
-            opcao = scanner.nextInt();
-        } else{
+        /*__________Habilidades__________*/
+        if(!scanner.hasNextInt()){
             System.out.println("Digite apenas números!");
-            scanner.next(); // limpa entrada inválida
+            scanner.next();
             return;
         }
-        switch (opcao) {
-            case 1 -> HabilidadesMaga.BOLA_DE_FOGO.usar(maga, inimigo);
-            case 2 -> HabilidadesMaga.RAJADA_ARCANA.usar(maga, inimigo);
-            case 3 -> HabilidadesMaga.BARREIRA_DE_SANGUE.usar(maga, inimigo);
-            case 4 -> { return; }
-            default -> System.out.println("Opção inválida.");
+
+        int opcao = scanner.nextInt();
+        // Voltar
+        if(opcao == habilidades.size() + 1){
+            return;
         }
+        // Validação
+        if (opcao < 1 || opcao > habilidades.size()) {
+            System.out.println("Opção inválida.");
+            return;
+        }
+        // Executando a Habilidade
+        habilidades.get(opcao-1).usar(mago, inimigo, batalha);
+
     }
     // Alinhando à esquerda
     public static String alinharEsquerda(String texto, int largura, String caracterRepetir){

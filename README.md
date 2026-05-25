@@ -4,6 +4,7 @@ Sistema de batalha RPG desenvolvido em Java com foco em Programação Orientada 
 - Combate por turnos
 - Troca de personagens
 - Sistema de ataque e defesa
+- Sistemas de Habilidades para cada personagem
 - Inimigo com IA básica
 - Gerenciamento de vida e estados
 
@@ -17,4 +18,4 @@ Sistema de batalha RPG desenvolvido em Java com foco em Programação Orientada 
 - Organização em pacotes
 
 ## Tecnologias
-- Java
+- Java 26
