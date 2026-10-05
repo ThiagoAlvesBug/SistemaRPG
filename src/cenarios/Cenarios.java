@@ -4,6 +4,11 @@ import java.util.Scanner;
 public class Cenarios {
     Scanner scanner = new Scanner(System.in);
 
+    public void cenarioFloresta(){
+
+    }
+
+
     public void cenario1(){
         System.out.println("|‾‾‾‾‾|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|‾‾‾‾‾|");
         System.out.println("|     |                                                                                      |     |");

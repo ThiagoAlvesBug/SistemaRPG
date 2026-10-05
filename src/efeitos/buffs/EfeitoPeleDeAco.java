@@ -1,5 +1,4 @@
 package efeitos.buffs;
-
 import batalha.SistemaBatalha;
 import efeitos.EfeitoStatus;
 import model.Personagem;

@@ -1,5 +1,4 @@
 package habilidades.buffsEdebuffs;
-
 import batalha.SistemaBatalha;
 import efeitos.buffs.EfeitoBerserker;
 import habilidades.Habilidades;

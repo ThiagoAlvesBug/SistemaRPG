@@ -1,14 +1,14 @@
 package menus;
 import habilidades.Habilidades;
 import model.Guerreiro;
-import model.Inimigo;
 import batalha.SistemaBatalha;
+import model.Personagem;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class MenuGuerreiro {
-    public static void abrir(Guerreiro guerreiro, Scanner scanner, Inimigo inimigo, SistemaBatalha batalha){
+    public static void abrir(Guerreiro guerreiro, Scanner scanner, Personagem alvo, SistemaBatalha batalha){
 
         // Listando Habilidades da classa Guerreiro
         List<Habilidades> habilidades = guerreiro.getHabilidades();
@@ -57,7 +57,7 @@ public class MenuGuerreiro {
             return;
         }
         // Executando a Habilidade
-        habilidades.get(opcao-1).usar(guerreiro, inimigo, batalha);
+        habilidades.get(opcao-1).usar(guerreiro, alvo, batalha);
     }
 
     // Alinhando à esquerda
@@ -79,9 +79,9 @@ public class MenuGuerreiro {
     // Alinhando no centro
     public static String alinharCentro(String texto, int largura, String caracterRepetir){
         var textoRecortado = (texto + " ".repeat(largura)).substring(0, largura).trim();
-        int espaçoTotal = largura - textoRecortado.length();
-        int esquerda = espaçoTotal/2;
-        int direita = espaçoTotal - esquerda;
+        int espacoTotal = largura - textoRecortado.length();
+        int esquerda = espacoTotal/2;
+        int direita = espacoTotal - esquerda;
         //   Preencher à esquerda_________+_________Conteúdo_________+_________Preencher à direita
         return caracterRepetir.repeat(esquerda) + textoRecortado + caracterRepetir.repeat(direita);
     }

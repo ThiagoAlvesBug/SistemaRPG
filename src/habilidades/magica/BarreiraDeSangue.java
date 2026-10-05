@@ -1,5 +1,4 @@
 package habilidades.magica;
-
 import batalha.SistemaBatalha;
 import efeitos.buffs.EfeitoBarreira;
 import habilidades.Habilidades;

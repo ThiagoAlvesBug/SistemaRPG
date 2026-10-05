@@ -13,12 +13,12 @@ public class SistemaBatalha {
     Personagem jogadorAtivo;
     Guerreiro guerreiro;
     Mago mago;
-    Inimigo inimigo;
+    PersonagemInimigo inimigo;
 
-    public SistemaBatalha(Guerreiro guerreiro, Mago mago) {
+    public SistemaBatalha(Guerreiro guerreiro, Mago mago, PersonagemInimigo inimigo) {
         this.guerreiro = guerreiro;
         this.mago = mago;
-        inimigo = new Inimigo("Andariel");
+        this.inimigo = inimigo;
         // Iniciando com personagem aleatório (nextBoolean retorna true ou false, aleatoriamente)
         if (random.nextBoolean()) {
             jogadorAtivo = guerreiro;
@@ -72,14 +72,14 @@ public class SistemaBatalha {
     // Alinhando no centro
     public String alinharCentro(String texto, int largura, String caracterRepetir) {
         var textoRecortado = (texto + " ".repeat(largura)).substring(0, largura).trim();
-        int espaçoTotal = largura - textoRecortado.length();
-        int esquerda = espaçoTotal / 2;
-        int direita = espaçoTotal - esquerda;
+        int espacoTotal = largura - textoRecortado.length();
+        int esquerda = espacoTotal / 2;
+        int direita = espacoTotal - esquerda;
         //   Preencher à esquerda_________+_________Conteúdo_________+_________Preencher à direita
         return caracterRepetir.repeat(esquerda) + textoRecortado + caracterRepetir.repeat(direita);
     }
 
-    // Alinhando dois itens no centro
+    // Alinhando dois model.itens no centro
     public String alinharDoisItensCentro(String texto1, String texto2, int largura, String caracterRepetir) {
         texto1 = texto1.trim();
         texto2 = texto2.trim();
@@ -201,7 +201,7 @@ public class SistemaBatalha {
                 return ComportamentoAposMenuPrincipal.COMPLETOU_TURNO;
             }
             case ABRIR_MENU_ITENS -> {
-                jogadorAtivo.abrirMenuItens(scanner);
+                jogadorAtivo.abrirMenuItens(scanner, this);
                 return ComportamentoAposMenuPrincipal.COMPLETOU_TURNO;
             }
             case TROCAR_PERSONAGEM -> {
@@ -248,7 +248,7 @@ public class SistemaBatalha {
     private void turnoInimigo(SistemaBatalha batalha) {
         System.out.println("|" + "-".repeat(98) + "|");
         System.out.println();
-        if (inimigo.vida > 0) {
+        if (inimigo.getVida() > 0) {
             inimigo.executarTurno(jogadorAtivo,batalha);
         }
     }
@@ -256,7 +256,7 @@ public class SistemaBatalha {
     // Verificando morte de algum personagem e efetuando a troca entre personagens.
     private boolean verificarBatalhaAtiva() {
         // Se vida <= 0, personagem morreu.
-        if (jogadorAtivo.vida > 0) {
+        if (jogadorAtivo.getVida() > 0) {
             return true;
         }
 
@@ -266,7 +266,7 @@ public class SistemaBatalha {
         // Guerreiro troca para Maga
         if (jogadorAtivo == guerreiro && mago.getVida() > 0) {
             jogadorAtivo = mago;
-            System.out.println("⬆️ " + mago.nome + " entrou na batalha.");
+            System.out.println("⬆️ " + mago.getNome() + " entrou na batalha.");
             return true;
         }
 
@@ -278,14 +278,14 @@ public class SistemaBatalha {
         }
 
         // Todos os jogadores morreram
-        System.out.println("❌ " + mago.nome + " e " + guerreiro.nome + " foram derrotados.");
+        System.out.println("❌ " + mago.getNome() + " e " + guerreiro.getNome() + " foram derrotados.");
         return false;
     }
 
     // Verificando o fim da batalha
     public boolean verificarFimDeBatalha() {
         if (inimigo.morto()) {
-            System.out.println("🌟 !" + inimigo.nome + " derrotado! 🌟");
+            System.out.println("🌟 !" + inimigo.getNome() + " derrotado! 🌟");
             System.out.println("Batalha encerrada.");
             return true;
         }

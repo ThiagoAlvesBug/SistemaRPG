@@ -1,5 +1,4 @@
 package habilidades;
-
 import batalha.SistemaBatalha;
 import model.Personagem;
 

@@ -1,5 +1,4 @@
 package habilidades.fisica;
-
 import batalha.SistemaBatalha;
 import habilidades.Habilidades;
 import model.Personagem;

@@ -1,9 +1,7 @@
 package habilidades.magica;
-
 import batalha.SistemaBatalha;
 import habilidades.Habilidades;
 import model.Personagem;
-
 import java.util.Random;
 
 public class RajadaArcana implements Habilidades {

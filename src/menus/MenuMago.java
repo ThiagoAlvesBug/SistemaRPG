@@ -1,13 +1,15 @@
 package menus;
 import habilidades.Habilidades;
-import model.Inimigo;
+import model.Chefe;
 import model.Mago;
 import batalha.SistemaBatalha;
+import model.Personagem;
+
 import java.util.*;
 
 public class MenuMago {
 
-    public static void abrir(Mago mago, Scanner scanner, Inimigo inimigo, SistemaBatalha batalha){
+    public static void abrir(Mago mago, Scanner scanner, Personagem alvo, SistemaBatalha batalha){
         // Listando Habilidades da classe Mago
         List<Habilidades> habilidades = mago.getHabilidades();
         /*__________Menu_De_Habilidades__________*/
@@ -56,7 +58,7 @@ public class MenuMago {
             return;
         }
         // Executando a Habilidade
-        habilidades.get(opcao-1).usar(mago, inimigo, batalha);
+        habilidades.get(opcao-1).usar(mago, alvo, batalha);
 
     }
     // Alinhando à esquerda
@@ -78,9 +80,9 @@ public class MenuMago {
     // Alinhando no centro
     public static String alinharCentro(String texto, int largura, String caracterRepetir){
         var textoRecortado = (texto + " ".repeat(largura)).substring(0, largura).trim();
-        int espaçoTotal = largura - textoRecortado.length();
-        int esquerda = espaçoTotal/2;
-        int direita = espaçoTotal - esquerda;
+        int espacoTotal = largura - textoRecortado.length();
+        int esquerda = espacoTotal/2;
+        int direita = espacoTotal - esquerda;
         //   Preencher à esquerda_________+_________Conteúdo_________+_________Preencher à direita
         return caracterRepetir.repeat(esquerda) + textoRecortado + caracterRepetir.repeat(direita);
     }

@@ -1,4 +1,5 @@
 import batalha.SistemaBatalha;
+import jogo.SistemaJogo;
 import model.Guerreiro;
 import model.Mago;
 import service.Colors;
@@ -9,62 +10,26 @@ void main() throws Exception{
 
     //Colors.colorfulPrint("Testando texto colorido", Colors.BLUE);
 
-    SistemaBatalha sistemaBatalha = new SistemaBatalha(guerreiro, mago);
-    sistemaBatalha.iniciar();
+    //SistemaBatalha sistemaBatalha = new SistemaBatalha(guerreiro, mago);
+    //sistemaBatalha.iniciar();
+
+    SistemaJogo jogo = new SistemaJogo(guerreiro, mago);
+    jogo.iniciar();
 
 /*
 
-                         ‾\_Ideias_de_interface_para_o_terminal_/‾
+                         ‾\____________Ideias____________/‾
 
-|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
-|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
-| [Jogador]                                                                   [Inimigo] |
-| HP: _____                                                                    HP:_____ |
-| MP: _____                                                                             |
-|                                                                                       |
-|                                       /\      /\                                      |
-|                                     /‾‾‾‾‾‾‾‾‾‾‾\                                     |
-|                                    /   O     O   \                                    |
-|                          /‾‾‾‾‾‾‾‾                ‾‾‾‾‾‾‾‾\                           |
-|                          |         I N I M I G O          |                           |
-|                          |                                |                           |
-|                          |                                |                           |
-|                          |                                |                           |
-|                          |                                |                           |
-|                          |                                |                           |
-|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|
-| Log de batalha:                                                                       |
-| [Jogador] atacou [Inimigo] com [Golpe]                                                |
-| [Inimigo] contra-atacou, causando [x] de dano.                                        |
-|_______________________________________________________________________________________|
-#########################################################################################
-## [1] ATACAR                                                          [2] HABILIDADES ##
-##                               [4] ALTERAR PERSONAGEM                                ##
-## [3] DEFENDER                                                              [5] FUGIR ##
-#########################################################################################
+- Lista de model.itens;
+- Melhorar sistema de defesa (redução de dano);
+- Equipamentos;
+- Atributos, como força, inteligente, defesa física e mágica...
 
+                        ‾\__Atualizações_desde_o_último_commit__/‾
 
-‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-
-|‾‾‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|‾‾‾‾‾‾‾‾‾|
-|          |                                                                  |         |
-|          |                                                                  |         |
-|          |                           |‾‾‾‾‾‾‾‾‾‾|                           |         |
-|          |                           |          |                           |         |
-|          |                           |          |                           |         |
-|          |                           |          |                           |         |
-|          |___________________________|__________|___________________________|         |
-|         /                                                                   \         |
-|        /                                                                     \        |
-|       /                                                                       \       |
-|      /                                                                         \      |
-|     /                                                                           \     |
-|    /                                                                             \    |
-|   /                                                                               \   |
-|  /                                                                                 \  |
-| /                                                                                   \ |
-|/                                                                                     \|
-|_______________________________________________________________________________________|
+- Privatizados os atributos de Personagem;
+- Implementação de itens através de classes, com poções herdando item;
+- Métodos de personagem que criam e adicionam itens ao inventário;
 
 
 |‾‾‾‾‾|‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾|‾‾‾‾‾|
@@ -87,6 +52,32 @@ void main() throws Exception{
 | /                                                                                   \ |
 |/                                                                                     \|
 |_______________________________________________________________________________________|
+
+
+________________________________________________________________________________________
+|     |v\      /\    /vvvv\    /\    /\        /\     /\      /\      /\         |     |
+|     |vv\    /vv\  /vvvvvv\  /vv\  /vv\  /\  /vv\   /vv\    /vv\    /vv\        |     |
+|     |vvv\  /vvvv\/vvvv/\vv\/vvvv\/vvvv\/vv\/vvvv\ /vvvv\  /vvvv\  /vvvv\    /\ |     |
+|     |vvvv\/vvvvvv\vvv/vv\v/vvvvvv\vvvv/vvvv\vvvvv/vvvvvv\/vvvvvv\/vvvvvv\  /vv\|     |
+|     |vvvv/vv||vvvv\v/vvvv\vvvvvvvv\vv/vvvvvv\vvv/\vvvvvvv\vvvvvvv\vvvvvvv\/vvvv|     |                                                               |     |
+|     |vvv/vvv||vvvvv//\||vv\vvvvvvvv\/vvv/\vvv\v/vv\v||vvvv\/\vvvvv\/\vvvv/vvvvv|     |
+|     |vv/vvv/\|vvvv//vv\|vvv\vvvvvvv/vvv/vv\vvv/vvvv\||vvvv/vv\vvvv/vv\vv/vvvvvv|     |
+|     |V/vvv/vv\vvv//vvvv\vvvvv||vvv/vvv/vvvv\v/vvvvvv\|vvv/vvvv\vv/vvvv\/vvvvvvv|     |
+|     |    /vvvv\  /vvvvvv\    ||      /vvvvvv\vvvvvvvv\  /vvvvvv\/vvvvvv\    || |     |
+|     |      ||      ||        ||       | ||      ||         ||      ||       || |     |
+|     |______||______||________||_______| ||______||_________||______||_______||_|     |
+|    /                                                                            \    |
+|   /                                                                              \   |
+|  /                                                                                \  |
+| /                                                                                  \ |
+|/____________________________________________________________________________________\|
+
+
+
+
+
+
+
 
 */
 

@@ -1,5 +1,4 @@
 package habilidades.magica;
-
 import batalha.SistemaBatalha;
 import efeitos.debuffs.EfeitoQueimadura;
 import habilidades.Habilidades;

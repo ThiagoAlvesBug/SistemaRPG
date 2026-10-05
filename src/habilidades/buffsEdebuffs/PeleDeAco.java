@@ -1,5 +1,4 @@
 package habilidades.buffsEdebuffs;
-
 import batalha.SistemaBatalha;
 import efeitos.buffs.EfeitoPeleDeAco;
 import habilidades.Habilidades;

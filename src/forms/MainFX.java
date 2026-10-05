@@ -1,3 +1,4 @@
+/*
 package forms;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -73,3 +74,5 @@ public class MainFX extends Application {
         launch();
     }
 }
+
+*/

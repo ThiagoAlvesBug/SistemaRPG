@@ -20,13 +20,13 @@ public class MenuLayout {
     // Alinhando no centro
     public String alinharCentro(String texto, int largura, String caracterRepetir){
         var textoRecortado = (texto + " ".repeat(largura)).substring(0, largura).trim();
-        int espaçoTotal = largura - textoRecortado.length();
-        int esquerda = espaçoTotal/2;
-        int direita = espaçoTotal - esquerda;
+        int espacoTotal = largura - textoRecortado.length();
+        int esquerda = espacoTotal/2;
+        int direita = espacoTotal - esquerda;
         //   Preencher à esquerda_________+_________Conteúdo_________+_________Preencher à direita
         return caracterRepetir.repeat(esquerda) + textoRecortado + caracterRepetir.repeat(direita);
     }
-    // Alinhando dois itens no centro
+    // Alinhando dois model.itens no centro
     public String alinharDoisItensCentro(String texto1, String texto2, int largura, String caracterRepetir) {
         texto1 = texto1.trim();
         texto2 = texto2.trim();
