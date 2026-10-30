@@ -1,0 +1,51 @@
+package com.thiago.sistemarpg.model;
+import com.thiago.sistemarpg.batalha.SistemaBatalha;
+import com.thiago.sistemarpg.habilidades.fisica.GolpeDevastador;
+import com.thiago.sistemarpg.habilidades.Habilidades;
+import com.thiago.sistemarpg.habilidades.buffsEdebuffs.ModoBerserker;
+import com.thiago.sistemarpg.habilidades.buffsEdebuffs.PeleDeAco;
+import com.thiago.sistemarpg.menus.MenuGuerreiro;
+import com.thiago.sistemarpg.menus.MenuItens;
+import com.thiago.sistemarpg.model.itens.PocaoCura;
+import com.thiago.sistemarpg.model.itens.PocaoMana;
+import java.util.*;
+
+public class Guerreiro extends Personagem{
+    // Lista de Habilidades
+    private List<Habilidades> habilidades = new ArrayList<>();
+
+    // Construtor de Guerreiro
+    public Guerreiro(String nome){
+        super(nome,400,200,20,50,false);
+        setAtaqueOriginal(getAtaque());
+        setDefesaOriginal(getDefesa());
+        // 3 Poções de cura
+        adicionarItem(new PocaoCura());
+        adicionarItem(new PocaoCura());
+        adicionarItem(new PocaoCura());
+        // 2 Poções de mana
+        adicionarItem(new PocaoMana());
+        adicionarItem(new PocaoMana());
+        // Adicionando habilidades à lista de habilidades
+        habilidades.add(new GolpeDevastador());
+        habilidades.add(new ModoBerserker());
+        habilidades.add(new PeleDeAco());
+    }
+    // Menu de habilidade
+    @Override
+    public void abrirMenuHabilidades(Scanner scanner, Personagem alvo, SistemaBatalha batalha){
+        MenuGuerreiro.abrir(this, scanner, alvo, batalha);
+    }
+    // Menu de itens
+    @Override
+    public void abrirMenuItens(Scanner scanner, SistemaBatalha batalha) { MenuItens.abrir(this, scanner, batalha); }
+    // Habilidades
+    public List<Habilidades> getHabilidades(){
+        return habilidades;
+    }
+    // Recebendo Dano
+    @Override
+    public void receberDano(float dano, SistemaBatalha batalha) {
+        super.receberDano(dano, batalha);
+    }
+}
