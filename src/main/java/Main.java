@@ -18,7 +18,6 @@ void main() throws Exception{
 
                          ‾\____________Ideias____________/‾
 
-- Lista de itens;
 - Melhorar sistema de defesa (redução de dano);
 - Equipamentos;
 - Atributos, como força, inteligente, defesa física e mágica...
