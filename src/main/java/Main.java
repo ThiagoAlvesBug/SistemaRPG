@@ -20,6 +20,7 @@ void main() throws Exception{
 
 - Melhorar sistema de defesa (redução de dano);
 - Equipamentos;
+- 
 - Atributos, como força, inteligente, defesa física e mágica...
 
                         ‾\__Atualizações_desde_o_último_commit__/‾
